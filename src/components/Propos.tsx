@@ -24,7 +24,7 @@ export default function Propos() {
               <Linkedin />
             </div>
             <p className="font-bold">
-              <p>#SKINCARE</p>
+              <span>#SKINCARE</span>
             </p>
           </div>
         </div>
@@ -41,8 +41,12 @@ export default function Propos() {
         </div>
 
         <div className="max-sm:p-1 max-sm:space-y-8 max-lg:p-8 ">
-          <h1 className="max-lg:font-bold text-center
-          mb-3">NEWSLETTER</h1>
+          <h1
+            className="max-lg:font-bold text-center
+          mb-3"
+          >
+            NEWSLETTER
+          </h1>
           <p className="text-xs mb-2 max-sm:text-center">
             Lorem ipsum dolor sit amet consectetur adipisicing elit.
             <br /> Provident rem officiis expedita
@@ -56,7 +60,7 @@ export default function Propos() {
             "
             />
             <button className="bg-black p-1 rounded-xl  max-sm:p-3 max-sm:w-full px-3">
-              <p className="text-white">S'inscrire</p>
+              <span className="text-white">S'inscrire</span>
             </button>
           </div>
         </div>

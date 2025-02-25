@@ -1,12 +1,17 @@
 export type Product = {
+  quantity: number;
   id: number;
-  image: string;
   nom: string;
-  description: string;
+  description?: string;
   prix: number;
-  composition: string | undefined;
+  image: string;
+  detail?: string;
+  composition?: string;
+  catégorie?: string;
+  stock?: number;
+  teinte?: string;
+  marque?:string;
 };
-
 export type Product2 = {
   id: number;
   name: string;

@@ -2,16 +2,34 @@ import { ArrowLeft, ChevronDown, Heart } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import makeUp from "../makeUp.json";
+import { useCart } from "./CartContext";
+import { Product, Product2 } from "../type";
 
 type Slide = {
-  id: number;
+  id: number; 
   text: string;
   text1: string;
 };
 export default function MakeUpDetail() {
   const { id } = useParams<{ id: string }>(); // Récupère l'ID depuis l'URL
-  const selectedProduct = makeUp.find((p) => p.id === parseInt(id || "0"));
+  const selectedProduct = makeUp.find((p) => p.id === Number(id));
+const [quantity, setQuantity] = useState(1);
 
+  const { addToCart } = useCart();
+
+  const handleAddToCart = () => {
+      if (!selectedProduct) {
+        console.error("Produit introuvable, impossible d'ajouter au panier.");
+        return;
+      }
+    
+      const productToAdd: Product & { quantity: number } = {
+        ...selectedProduct,
+        quantity,
+      };
+    
+      addToCart(productToAdd);
+    };
   if (!selectedProduct) {
     return (
       <p className="text-center text-xl font-bold">Produit introuvable !</p>
@@ -80,6 +98,12 @@ export default function MakeUpDetail() {
       }
     };
   }, []);
+
+   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = Number(e.target.value);
+      if (newValue >= 1) setQuantity(newValue);
+      // Empêche les valeurs négatives
+    };
   return (
     <section className="">
       <Link to="/">
@@ -100,81 +124,55 @@ export default function MakeUpDetail() {
       <div className="p-10 max-lg:p-0 flex  max-sm:flex-wrap max-lg:flex-wrap gap-10 justify-evenly items-center ">
         <img
           src={selectedProduct.image}
-          alt={selectedProduct.name}
+          alt={selectedProduct.nom}
           className="w-[400px] h-[400px] max-sm:w-[200px] max-sm:h-[200px] object-cover mb-5"
         />
         <div className="p-12">
           <div className="grid gap-10 ">
             <div>
               <h1 className="text-4xl font-bold mb-1 max-lg:text-xl max-sm:text-sm">
-                {selectedProduct.name}
+                {selectedProduct.nom}
               </h1>
               <p className="text-md max-sm:flex max-sm:flex-wrap  max-sm:block ">
-                {}
-                {formatDetailText(selectedProduct.brand)}
+                {formatDetailText(selectedProduct.marque)}
               </p>
             </div>
-            <div className="flex flex-wrap gap- justify-between   max-lg:grid  p-1 max-sm:grid-cols-1">
-              <p className="text-xl font-bold mt-2">${selectedProduct.price}</p>
-              <div className="flex gap-30 max-sm:gap-10">
-                <div className="relative">
-                  <select
-                    id="quantity"
-                    className="peer block pb-1.5 pt-3 w-full max-lg:w- text-sm bg-transparent rounded-md border-2 border-gray-600 appearance-none px-5"
-                  >
-                    <option value="" disabled selected hidden>
-                      Quantité
-                    </option>
-                    {[1, 2, 3, 4].map((n) => (
-                      <option key={n} value={n}>
-                        {n}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-                    <ChevronDown color="black" size={12} />
-                  </div>
-                  <label
-                    htmlFor="quantity"
-                    className="absolute text-sm text-black duration-300 transform -translate-y-3 scale-75 top-1 z-10 bg-white"
-                  >
-                    Quantité
-                  </label>
-                </div>
-                <button className="bg-black px-20 max-lg:w-[600px]   max-sm:w-[400px] max-lg:p-2 rounded-md text-white">
-                  Ajouter
-                </button>
-              </div>
+            <div className="max-sm:flex flex-wrap space-y-4 justify-between   max-lg:grid  p-1 max-sm:grid-cols-1">
+
+
+               <div className=" flex gap-1 ">
+              <p className=" flex gap-10 font-semibold  ">
+                Prix
+                <span>:{selectedProduct.prix}</span>
+              </p>
+
+              <span className="">MRU</span>
             </div>
-            {/* Section Défilement Type TikTok */}
-            <div className="">
-              <div
-                ref={scrollRef}
-                className="flex gap-3 overflow-x-hidden text-sm  snap-x  "
+
+            <div className="flex gap-2 ">
+              <label className="mt-2 font-semibold">Quantité</label>
+              <input
+                type="number"
+                value={quantity} onChange={handleChange}
+                placeholder=""
+                className=" p-2 w-full border-2 rounded-xl  appearance-auto"
+              />
+            </div>
+
+            <div className="flex justify-between  h-10">
+              <button
+                className="bg-black px-10 max-lg:w-[400px] font-bold  max-sm:w-[200px] max-lg:p-2 rounded-xl text-white"
+                onClick={handleAddToCart}
               >
-                {slides.map((slide, index) => (
-                  <div
-                    key={slide.id}
-                    className="flex-none bg-gray-100 p-3 w-1/2 text-center snap-center"
-                  >
-                    <p className="font-bold max-sm:text-xs">{slide.text}</p>
-                    <p className="font-bold max-sm:text-xs">{slide.text1}</p>
-                  </div>
-                ))}
-              </div>
+                Ajouter
+              </button>
+              <button className="border-2 px-10 max-lg:w-[400px]   font-bold max-sm:w-[200px] max-lg:p-2 rounded-xl text-">
+                Annuler
+              </button>
             </div>
-            {/* Indicateurs (3 points) */}
-            <div className="flex justify-center gap-2 mt-2">
-              {slides.map((_, index) => (
-                <div
-                  key={index}
-                  className={`w-2 h-2 rounded-full cursor-pointer ${
-                    currentSlide === index ? "bg-black" : "bg-gray-400"
-                  }`}
-                  onClick={() => scrollTo(index)}
-                ></div>
-              ))}
-            </div>
+          </div>
+            {/* Section Défilement Type TikTok */}
+          
             <p
               className="text-md flex flex-col gap-4 text-justify "
               onClick={toggleDropdown}
@@ -188,7 +186,7 @@ export default function MakeUpDetail() {
                 <span className="bg-gray-100 p-2">Click to view details</span>
               )}{" "}
             </p>
-            <p
+            <div
               className="text-md flex flex-col gap-4 text-justify "
               onClick={toggleDropdown}
             >
@@ -200,7 +198,7 @@ export default function MakeUpDetail() {
               ) : (
                 <span className="bg-gray-100">Click to view details</span>
               )}
-            </p>
+            </div>
           </div>
         </div>
       </div>

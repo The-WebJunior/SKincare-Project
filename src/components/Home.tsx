@@ -3,42 +3,37 @@ export default function Home() {
     <div className="relative">
       <img
         src="/3917190.jfif"
-        className="w-full h-[90vh] max-sm:hidden max-lg:hidden"
+        className="w-full max-h-screen lg:block hidden "
       />
       <img
         src="/téléchargement (2).jfif"
-        className=" h-[90vh] max-sm:block hidden  max-lg:block"
+        className="block lg:hidden w-full object-cover mb-30 max-sm:h-screen"
       />
-      <div className="absolute inset-0 flex items-center justify-between ">
-        <div className="flex flex-col gap-5">
-          <div className="mx-4  max-lg:mx-44 ml-28  max-sm:mx-30 text-black  max-lg:text-center max-sm:text-white max-lg:text-white font-semibold max-sm:font-extrabold max-lg:font-extrabold text-5xl  max-sm:text-xl -mt-28 ">
-            
+      <div className="absolute inset-0 top-1/3 max-lg:mx-auto size-fit lg:top-20 lg:left-12 lg:text-start text-center ">
+        <div className="flex flex-col gap-5 lg:mt-40">
+          <div className="lg:text-black text-white  lg:font-semibold font-extrabold sm:text-5xl  text-xl">
             <p className="">H Y D R A</p>
             <p className="">F A C I A L</p>
             <p className="">C L E A N S E R</p>
             <p className="">T E C H N O L O G Y</p>
           </div>
           <div>
-            <button
-              className="bg-black p-2 text-white max-sm:font-bold max-sm:text-xs   max-sm:p-4 max-sm:ml-18 w-[40vh]  rounded-full px-10 ml-32
-            max-lg:justify-center max-lg:items-center  max-lg:p-4 max-lg:ml-44
-            "
-            >
+            <button className="bg-black px-12 py-4 rounded-full text-white">
               DISCOVER
             </button>
           </div>
         </div>
-
-        <div className=" flex max-sm:hidden max-lg:hidden">
-          <img
-            src="/téléchargement (2).jfif"
-            className=" h-[90vh] w-[50vh] mt-[120px]  "
-          />
-          <img
-            src="/téléchargement (3).jfif"
-            className=" h-[90vh] w-[40vh] mt-60  "
-          />
-        </div>
+      </div>
+      <div className="absolute right-0 top-0  flex  max-sm:hidden   max-lg:hidden block">
+        <img
+          src="/téléchargement (2).jfif"
+          className="w-72 h-screen 
+         "
+        />
+        <img
+          src="/téléchargement (3).jfif"
+          className="w-72 min-h-screen mt-24"
+        />
       </div>
     </div>
   );

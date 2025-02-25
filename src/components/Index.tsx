@@ -6,13 +6,14 @@ import Propos from "./Propos";
 
 export default function Index() {
   return (
-    <div>
-    
+    <div className="min-w-sm">
       <Home />
-      <Produit />
-      <Produit2 />
-      <Conseil />
-      <Propos />
+      <main className="sm:px-8 px-4">
+        <Produit />
+        <Produit2 />
+        <Conseil />
+        <Propos />
+      </main>
     </div>
   );
 }
