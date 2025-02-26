@@ -1,6 +1,6 @@
 import { Heart, ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import makeUp from "../makeUp.json";
 import { Product } from "../type.ts";
 import { useHeart } from "./Context/HeartContext.tsx";
@@ -39,22 +39,24 @@ export default function Produit2() {
                   New !
                 </p>
                 <Heart
-                className={`cursor-pointer transition-colors ${
-                  favoriteProducts.includes(produit.id) ? "text-red-500" : "text-black"
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation(); // Empêche la propagation du clic
-                  toggleHeart(produit.id);
-                }}
-              /> 
+                  className={`cursor-pointer transition-colors ${
+                    favoriteProducts.includes(produit.id)
+                      ? "text-red-500"
+                      : "text-black"
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation(); // Empêche la propagation du clic
+                    toggleHeart(produit.id);
+                  }}
+                />
               </div>
               {/* <Link to={`/produit2/${produit.id}`}> */}
-                <img
-                  src={produit.image}
-                  alt={produit.nom}
-                  className="h-64  mb-10 max-sm:mb-5 w-full  max-sm:h-32 max-sm:
+              <img
+                src={produit.image}
+                alt={produit.nom}
+                className="h-64  mb-10 max-sm:mb-5 w-full  max-sm:h-32 max-sm:
                  "
-                />
+              />
               {/* </Link> */}
               <div className="flex flex-col gap-3 mb-2 ">
                 <p className="text-lg max-sm:text-xs max-lg:text-sm max-sm:font-extrabold  max-lg:font-extrabold  font-bold">
@@ -64,11 +66,11 @@ export default function Produit2() {
                 <p> ${produit.prix} </p>
               </div>
               <button
-              className=" flex gap-2 justify-center border-2 w-full max-sm:p-1 border-black py-1 mr-5 rounded-3xl"
-              onClick={() => handleNavigate(produit.id)}
-            >
-               <ShoppingCart /> Panier
-            </button>
+                className=" flex gap-2 justify-center border-2 w-full max-sm:p-1 border-black py-1 mr-5 rounded-3xl"
+                onClick={() => handleNavigate(produit.id)}
+              >
+                <ShoppingCart /> Panier
+              </button>
             </div>
           ))}
         </div>

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, ReactNode } from "react";
+import { createContext, useContext, useState } from "react";
 
 type Product = {
   id: number;

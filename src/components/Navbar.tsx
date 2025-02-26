@@ -121,7 +121,7 @@ export default function Navbar() {
                 </span>
               )}
             </div>
-            <CalendarCheck className="text-white  max-sm:hidden  " />
+            <CalendarCheck className="text-white    " />
             <div className="relative">
               <ShoppingCart
                 className="text-white cursor-pointer"

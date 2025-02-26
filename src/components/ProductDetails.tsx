@@ -1,28 +1,23 @@
 import { ArrowLeft, Heart } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import product from "../product.json";
 import { Product } from "../type";
 import { useCart } from "./Context/CartContext";
 import { useHeart } from "./Context/HeartContext";
 
-type Slide = {
-  id: number;
-  text: string;
-  text1: string;
-};
 export default function ProductDetails() {
   const { id } = useParams<{ id: string }>(); // Récupère l'ID depuis l'URL
   const [quantity, setQuantity] = useState(1);
   // const { favoriteProducts, toggleHeart } = useHeart(); // Récupère les favoris
-  const { favoriteProducts, toggleHeart } = useHeart(); 
+  const { favoriteProducts, toggleHeart } = useHeart();
 
-  
   const { addToCart } = useCart();
   const [isOpen, setIsOpen] = useState(false); // Gère l'état du dropdown
   const selectedProduct = product.find((p) => p.id.toString() === id);
-  const isFavorite = selectedProduct ? favoriteProducts.includes(selectedProduct.id) : false;
-
+  const isFavorite = selectedProduct
+    ? favoriteProducts.includes(selectedProduct.id)
+    : false;
 
   const handleAddToCart = () => {
     if (!selectedProduct) {
@@ -48,30 +43,7 @@ export default function ProductDetails() {
     setIsOpen(!isOpen); // Inverse l'état d'affichage du dropdown
   };
 
-  const slides: Slide[] = [
-    { id: 1, text: "Livraison offerte", text1: " à partir de 59€ d’achat" },
-    { id: 2, text: "Paiement sécurisé ", text1: "en carte bancaire et Paypal" },
-    {
-      id: 3,
-      text: "Heureuse ou remboursée  ",
-      text1: "Retours gratuits sous 30 jours",
-    },
-  ];
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   // Fonction pour défiler jusqu’à une diapositive et mettre à jour l’état
-  const scrollTo = (index: number) => {
-    if (scrollRef.current) {
-      const slideWidth = scrollRef.current.clientWidth;
-      scrollRef.current.scrollTo({
-        left: slideWidth * index,
-        behavior: "smooth",
-      });
-      setCurrentSlide(index); // Met à jour l'état immédiatement
-    }
-  };
 
   const formatDetailText = (text: string) => {
     return text.split("\n").map((part, index) => (
@@ -88,47 +60,26 @@ export default function ProductDetails() {
   };
 
   // Détecte le changement de diapositive quand on scroll horizontalement
-  useEffect(() => {
-    console.log(id);
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const scrollLeft = scrollRef.current.scrollLeft;
-        const slideWidth = scrollRef.current.clientWidth;
-        const index = Math.round(scrollLeft / slideWidth);
-        setCurrentSlide(index);
-      }
-    };
 
-    const scrollElement = scrollRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollElement) {
-        scrollElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
   return (
     <section className="w-full">
-     
-       <div className=" hidden max-sm:block max-lg:block mt-20 max-sm:flex max-lg:flex  justify-between items-center gap-4">
-  <div className="flex max-lg:mt-6">
-    <Link to="/" className="p- w-10">
-      <ArrowLeft color="black" className="max-sm:text-xs" />
-    </Link>
-    <p className="bg-[#f7e688] rounded-br-xl text-sm p- ">New !</p>
-  </div>
-    <span>
-    <Heart
-  className={`cursor-pointer  mr-5 ${isFavorite ? "text-red-500" : "text-black "}`}
-  onClick={() => selectedProduct && toggleHeart(selectedProduct.id)}
-/>
-    
-  </span>
-            </div>
-     
+      <div className=" hidden max-sm:block max-lg:block mt-20 max-sm:flex max-lg:flex  justify-between items-center gap-4">
+        <div className="flex max-lg:mt-6">
+          <Link to="/" className="p- w-10">
+            <ArrowLeft color="black" className="max-sm:text-xs" />
+          </Link>
+          <p className="bg-[#f7e688] rounded-br-xl text-sm p- ">New !</p>
+        </div>
+        <span>
+          <Heart
+            className={`cursor-pointer  mr-5 ${
+              isFavorite ? "text-red-500" : "text-black "
+            }`}
+            onClick={() => selectedProduct && toggleHeart(selectedProduct.id)}
+          />
+        </span>
+      </div>
+
       <Link to="/" className="max-sm:hidden max-lg:hidden block ">
         {" "}
         <div className=" p-2     w-10 mt-20  -mr-1">

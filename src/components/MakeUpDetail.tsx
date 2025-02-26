@@ -1,23 +1,21 @@
 import { ArrowLeft, Heart } from "lucide-react";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import makeUp from "../makeUp.json";
 import { Product } from "../type";
 import { useCart } from "./Context/CartContext";
 import { useHeart } from "./Context/HeartContext";
 
-type Slide = {
-  id: number;
-  text: string;
-  text1: string;
-};
 export default function MakeUpDetail() {
-  const { id } = useParams<{ id: string }>(); // Récupère l'ID depuis l'URL
-  const selectedProduct = makeUp.find((p) => p.id === Number(id));
+  const { favoriteProducts, toggleHeart } = useHeart();
   const [quantity, setQuantity] = useState(1);
-  const { toggleHeart } = useHeart();
 
   const { addToCart } = useCart();
+  const { id } = useParams<{ id: string }>(); // Récupère l'ID depuis l'URL
+  const selectedProduct = makeUp.find((p) => p.id === Number(id));
+  const isFavorite = selectedProduct
+    ? favoriteProducts.includes(selectedProduct.id)
+    : false;
 
   const handleAddToCart = () => {
     if (!selectedProduct) {
@@ -44,30 +42,7 @@ export default function MakeUpDetail() {
     setIsOpen(!isOpen); // Inverse l'état d'affichage du dropdown
   };
 
-  const slides: Slide[] = [
-    { id: 1, text: "Livraison offerte", text1: " à partir de 59€ d’achat" },
-    { id: 2, text: "Paiement sécurisé ", text1: "en carte bancaire et Paypal" },
-    {
-      id: 3,
-      text: "Heureuse ou remboursée  ",
-      text1: "Retours gratuits sous 30 jours",
-    },
-  ];
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   // Fonction pour défiler jusqu’à une diapositive et mettre à jour l’état
-  const scrollTo = (index: number) => {
-    if (scrollRef.current) {
-      const slideWidth = scrollRef.current.clientWidth;
-      scrollRef.current.scrollTo({
-        left: slideWidth * index,
-        behavior: "smooth",
-      });
-      setCurrentSlide(index); // Met à jour l'état immédiatement
-    }
-  };
 
   const formatDetailText = (text: string) => {
     return text.split("\n").map((part, index) => (
@@ -79,27 +54,6 @@ export default function MakeUpDetail() {
   };
 
   // Détecte le changement de diapositive quand on scroll horizontalement
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const scrollLeft = scrollRef.current.scrollLeft;
-        const slideWidth = scrollRef.current.clientWidth;
-        const index = Math.round(scrollLeft / slideWidth);
-        setCurrentSlide(index);
-      }
-    };
-
-    const scrollElement = scrollRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener("scroll", handleScroll);
-    }
-
-    return () => {
-      if (scrollElement) {
-        scrollElement.removeEventListener("scroll", handleScroll);
-      }
-    };
-  }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value);
@@ -108,26 +62,29 @@ export default function MakeUpDetail() {
   };
   return (
     <section className="">
-       <div className="mt-20 max-sm:flex max-lg:flex justify-between items-center gap-4">
-      <div className="flex">
-        <Link to="/" className="p- w-10">
-          <ArrowLeft color="black" className="max-sm:text-xs" />
-        </Link>
-        <p className="bg-[#f7e688] rounded-br-xl text-sm p- ">New !</p>
-      </div>
-        <span>
-        <Heart className="text-black max-lg:mr-12"  
-        //  onClick={toggleHeart} 
-         />
-      </span>
-    </div>
-
-     <Link to="/" className="max-sm:hidden block ">
-            {" "}
-            <div className=" p-2     w-10 mt-20  -mr-1">
-              <ArrowLeft color="black" className="max-sm:text-xs" />
-            </div>
+      <div className="mt-20 max-sm:flex max-lg:flex justify-between items-center gap-4">
+        <div className="flex">
+          <Link to="/" className="p- w-10">
+            <ArrowLeft color="black" className="max-sm:text-xs" />
           </Link>
+          <p className="bg-[#f7e688] rounded-br-xl text-sm p- ">New !</p>
+        </div>
+        <span>
+          <Heart
+            className={`cursor-pointer  mr-5 ${
+              isFavorite ? "text-red-500" : "text-black "
+            }`}
+            onClick={() => selectedProduct && toggleHeart(selectedProduct.id)}
+          />
+        </span>
+      </div>
+
+      <Link to="/" className="max-sm:hidden block ">
+        {" "}
+        <div className=" p-2     w-10 mt-20  -mr-1">
+          <ArrowLeft color="black" className="max-sm:text-xs" />
+        </div>
+      </Link>
       <div className="p-5 max-lg:p-0 flex  max-sm:flex-wrap max-lg:flex-wrap  justify-evenly items-center ">
         <img
           src={selectedProduct.image}
@@ -135,22 +92,21 @@ export default function MakeUpDetail() {
           className="w-[400px] h-[400px] max-sm:w-[300px] max-sm:h-[400px] object-cover "
         />
         <div className="flex flex-col flex-wrap w-1/2 p-10 max-sm:w-full gap-4">
-        
-            <h1 className="text-4xl font-bold mb-1 max-lg:text-xl max-sm:text-sm">
-              {selectedProduct.nom}
-            </h1>
-            <p className="text-md max-sm:flex max-sm:flex-wrap  max-sm:block ">
-              {formatDetailText(selectedProduct.marque)}
-            </p>
-        
-          <div className=" space-y-2  max-lg:grid   max-sm:grid-cols-1">
-              <p className=" flex gap-10 font-semibold  ">
-                Prix
-              <span>:{selectedProduct.prix}
-             MRU</span>
-              </p>
+          <h1 className="text-4xl font-bold mb-1 max-lg:text-xl max-sm:text-sm">
+            {selectedProduct.nom}
+          </h1>
+          <p className="text-md max-sm:flex max-sm:flex-wrap  max-sm:block ">
+            {formatDetailText(selectedProduct.marque)}
+          </p>
 
-        
+          <div className=" space-y-2  max-lg:grid   max-sm:grid-cols-1">
+            <p className=" flex gap-10 font-semibold  ">
+              Prix
+              <span>
+                :{selectedProduct.prix}
+                MRU
+              </span>
+            </p>
 
             <div className="  flex gap-2 max-sm:w-full ">
               <label className="mt-2 font-semibold">Quantité</label>
