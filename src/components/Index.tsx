@@ -8,9 +8,11 @@ export default function Index() {
   return (
     <div className="min-w-sm">
       <Home />
-      <main className="sm:px-8 px-4">
-        <Produit />
-        <Produit2 />
+      <main className=" px-4">
+        <div className="mb-10">
+          <Produit />
+        </div>
+          <Produit2 />
         <Conseil />
         <Propos />
       </main>

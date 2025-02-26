@@ -28,12 +28,11 @@ export default function Produit2() {
             </span>
           ))}
         </h1>
-        <div className="sm:flex gap-3   items-center snap-x scroll-pl-6 grid grid-cols-2 overflow-x-auto">
+        <div className="sm:flex gap-3   items-stretch snap-x scroll-pl-6 grid grid-cols-2 overflow-x-auto">
           {products.map((produit: Product) => (
             <div
               key={produit.id}
-              className="flex-shrink-0 p-1  cursor-pointer  hover:scale-105   max-sm:gap-y-1  border-2 border-gray-200   w-[250px] max-sm:w-[190px]  justify-between  flex flex-col "
-            >
+              className="flex-shrink-0 p-5 max-sm:p-1  snap-start max-sm:gap-y-1 border-2 border-gray-200 w-[250px] max-sm:w-[170px] justify-between flex flex-col max-sm:transition-none duration-300 cursor-pointer overflow-x-auto ">
               <div className=" flex justify-between divide-none mb-2 mr-2">
                 <p className="bg-[#f7e688] border rounded-br-xl p-0.5 text-sm px-3">
                   New !
@@ -66,7 +65,7 @@ export default function Produit2() {
                 <p> ${produit.prix} </p>
               </div>
               <button
-                className=" flex gap-2 justify-center border-2 w-full max-sm:p-1 border-black py-1 mr-5 rounded-3xl"
+                 className=" flex gap-2 justify-center max-sm:ml-2 border-2 w-full max-sm:w-36  max-sm:p-0.5 border-black py-1 mr-5 rounded-3xl"
                 onClick={() => handleNavigate(produit.id)}
               >
                 <ShoppingCart /> Panier
