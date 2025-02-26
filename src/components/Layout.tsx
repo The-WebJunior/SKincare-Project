@@ -1,20 +1,22 @@
 // import { Outlet } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { CartProvider } from "./CartContext";
+import { CartProvider } from "./Context/CartContext";
 import Navbar from "./Navbar";
+import { HeartProvider } from "./Context/HeartContext";
 
 export default function Layout() {
   return (
-    <div className="">
+    <section className="">
       <CartProvider>
-        {/* Navbar fixe */}
+      <HeartProvider>
         <Navbar />
 
-        {/* Contenu dynamique */}
         <div className="">
-          <Outlet /> {/* C'est ici que les routes enfants seront affichées */}
+          <Outlet /> 
         </div>
+
+      </HeartProvider>
       </CartProvider>
-    </div>
+    </section>
   );
 }

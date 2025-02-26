@@ -8,7 +8,8 @@ import {
   X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useCart } from "./CartContext";
+import { useCart } from "./Context/CartContext";
+import { useHeart } from "./Context/HeartContext";
 
 export default function Navbar() {
   const [sidebarOpen, setSidebarOpen] = useState(false); // Gère le panier
@@ -16,6 +17,8 @@ export default function Navbar() {
     setSidebarOpen(!sidebarOpen);
   };
   const { cart, removeFromCart } = useCart();
+  const { favoriteProducts } = useHeart();
+
   const fraisLivraison = 100;
   const sousTotal = cart.reduce(
     (total, item) => total + (item.prix || 0) * (item.quantity || 0),
@@ -76,7 +79,7 @@ export default function Navbar() {
 
     const encodedMessage = encodeURIComponent(message);
     const whatsappUrl = `https://wa.me/${vendeurPhone}?text=${encodedMessage}`;
-
+    // Le lien de base pour démarrer une conversation avec le numéro du commerçant.
     window.open(whatsappUrl, "_blank");
     closeModal(); // Ferme la modal après l'envoi
   };
@@ -110,7 +113,14 @@ export default function Navbar() {
             </li>
           </ul>
           <div className="flex gap-3">
-            <Heart className="text-white" />
+            <div className="relative">
+              <Heart className="text-white cursor-pointer" />
+              {favoriteProducts.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full px-1">
+                  {favoriteProducts.length}
+                </span>
+              )}
+            </div>
             <CalendarCheck className="text-white  max-sm:hidden  " />
             <div className="relative">
               <ShoppingCart
@@ -199,22 +209,23 @@ export default function Navbar() {
       </div>
       {/* Sidebar Panier */}
       <div
-        className={`fixed top-0 right-0 w-1/3 bg-white h-full p-10 transform transition-transform z-50 rounded-s-2xl ${
-          sidebarOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 w-1/3 bg-white h-full shadow-xl p-10 max-lg:p-4 transform transition-transform z-50 
+          max-lg:w-2/3  max-sm:w-[45vh] rounded-s-4xl ${
+            sidebarOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex mb-10 -mt-5  overflow-auto ">
           <button onClick={toggleSidebar} className="absolute top-2 right-2">
             <X className="mt-6" size={13} />
           </button>
-          <h2 className="text-xl font-bold mb-1">Votre Panier</h2>
+          <h2 className="text-xl font-bold mb-3 max-sm:mt-10">Votre Panier</h2>
         </div>
         {cart.length === 0 ? (
           <p>Votre panier est vide</p>
         ) : (
           <ul className="">
             {cart.map((item) => (
-              <li key={item.id} className="flex  p-2 ">
+              <li key={item.id} className="flex  p-2 max-sm:p-1 max-sm:mr-10 ">
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-sm -mt-32 "
@@ -222,17 +233,17 @@ export default function Navbar() {
                   <X className="mt-6" size={13} />
                 </button>
                 <div className="grid grid-cols-2 gap-10  ">
-                  <div className="flex">
+                  <div className="flex max-sm:mr-14">
                     <img
                       src={item.image}
                       alt={item.nom}
-                      className="w-16 h-16"
+                      className="w-16 h-16 max-sm:w-20 max-sm:h-16"
                     />
                     <p className="mt-3 font-bold w-80 text-md">{item.nom}</p>
                   </div>
                   <div className="flex flex-col items-start space-y-2 ml-16">
-                    <p className="text-xl font-bold w-80">{item.prix} MRU</p>
-                    <div className="flex items-center justify-between w-24 border rounded-2xl p2">
+                    <p className="text-xl max-sm:text-sm font-bold w-80 max-sm:w-52">{item.prix} MRU</p>
+                    <div className="flex items-center justify-between w-24  max-sm:w-16  max-sm:p1 border rounded-2xl p2">
                       <button className="text-xl font-bold text-green-500 hover:bg-green-100 rounded-full w-8 h-8 flex items-center justify-center">
                         +
                       </button>
@@ -247,11 +258,11 @@ export default function Navbar() {
             ))}
           </ul>
         )}
-        <div className="fixed bottom-14 p-1">
-          <div className=" mb-5 border rounded-3xl w-[57vh] p-2 bg-black font-bold text-center  text-white">
+        <div className="fixed bottom-14 p-1 max-lg:bottom-30 max-sm:bottom-10 ">
+          <div className=" mb-5 border rounded-3xl w-[57vh] p-2 max-lg:w-[38vh] bg-black font-bold text-center  text-white">
             Frais de livraison {fraisLivraison}MRU
           </div>
-          <div className="grid grid-cols-1">
+          <div className="grid grid-cols-1  max-lg:w-[38vh]">
             <p className="text-lg font-semibold  flex justify-between">
               Sous-total{" "}
               <span className="font-bold">
@@ -269,7 +280,7 @@ export default function Navbar() {
             </p>
           </div>
           <div
-            className={`border rounded-3xl w-[57vh] p-2 font-bold text-center text-white 
+            className={`border rounded-3xl w-[57vh]  max-lg:w-[38vh] p-2 font-bold text-center text-white 
     ${
       cart.length === 0
         ? "bg-gray-500 cursor-not-allowed"
@@ -280,9 +291,9 @@ export default function Navbar() {
             Commander
           </div>
           {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg shadow-lg w-[40vh]">
-                <h2 className="text-xl font-bold mb-4 text-center">
+            <div className="fixed inset-0 flex items-center justify-center rounded-s-4xl shadow-xl bg-white bg-opacity-50">
+              <div className="bg-black p-6 rounded-lg shadow-lg w-[40vh]">
+                <h2 className="text-xl text-white font-bold mb-4 text-center">
                   Votre numéro
                 </h2>
 
@@ -290,7 +301,7 @@ export default function Navbar() {
                 <input
                   type="tel"
                   placeholder="Ex: 221774567890"
-                  className="border p-2 w-full rounded"
+                  className="border p-2  w-full rounded text-white placeholder:text-white"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
@@ -298,13 +309,13 @@ export default function Navbar() {
                 {/* Boutons */}
                 <div className="flex justify-between mt-4">
                   <button
-                    className="bg-gray-500 text-white px-4 py-2 rounded"
+                    className="bg-slate-200 text-black px-4 py-1 rounded"
                     onClick={closeModal}
                   >
                     Annuler
                   </button>
                   <button
-                    className="bg-green-600 text-white px-4 py-2 rounded"
+                    className="bg-slate-200 text-black px-4 py-1 rounded"
                     onClick={handleWhatsAppRedirect}
                   >
                     Envoyer

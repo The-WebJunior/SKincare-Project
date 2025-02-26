@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import makeUp from "../makeUp.json";
 import { Product } from "../type.ts";
+import { useHeart } from "./Context/HeartContext.tsx";
 
 export default function Produit2() {
   const [products, setProducts] = useState<Product[]>([]);
   const navigate = useNavigate();
+  const { favoriteProducts, toggleHeart } = useHeart(); // Récupère les favoris
 
   const handleNavigate = (id: number) => {
     navigate(`/produit2/${id}`);
@@ -36,7 +38,15 @@ export default function Produit2() {
                 <p className="bg-[#f7e688] border rounded-br-xl p-0.5 text-sm px-3">
                   New !
                 </p>
-                <Heart className="text-black" />
+                <Heart
+                className={`cursor-pointer transition-colors ${
+                  favoriteProducts.includes(produit.id) ? "text-red-500" : "text-black"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation(); // Empêche la propagation du clic
+                  toggleHeart(produit.id);
+                }}
+              /> 
               </div>
               {/* <Link to={`/produit2/${produit.id}`}> */}
                 <img

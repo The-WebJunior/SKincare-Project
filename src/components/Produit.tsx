@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import product from "../product.json";
 import { Product } from "../type.ts";
+import { useHeart } from "./Context/HeartContext.tsx";
 
 export default function Produit() {
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ export default function Produit() {
   const [products, setProducts] = useState<Product[]>([]);
 
   const [zoomedProduct, setZoomedProduct] = useState(null);
+  const { favoriteProducts, toggleHeart } = useHeart(); // Récupère les favoris
 
   const toggleZoom = (productId: any) => {
     setZoomedProduct(zoomedProduct === productId ? null : productId);
@@ -50,7 +52,15 @@ export default function Produit() {
               <p className="bg-[#f7e688] border rounded-br-xl p-0.5 text-sm px-3">
                 New !
               </p>
-              <Heart className="text-black" />
+              <Heart
+                className={`cursor-pointer transition-colors ${
+                  favoriteProducts.includes(produit.id) ? "text-red-500" : "text-black"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation(); // Empêche la propagation du clic
+                  toggleHeart(produit.id);
+                }}
+              /> 
             </div>
             <img
               src={produit.image}
@@ -65,7 +75,9 @@ export default function Produit() {
               <p className="text-xs  max-sm:w-40 max-lg:w-40 text-justify ">
                 {produit.description}
               </p>
-              <p> ${produit.prix} </p>
+              <p className="flex gap-2"> <span className="font-black ">MRU</span>
+                
+                {produit.prix} </p>
             </div>
             <button
               className=" flex gap-2 justify-center border-2 w-full max-sm:p-1 border-black py-1 mr-5 rounded-3xl"
