@@ -62,8 +62,9 @@ export default function Produit2() {
                   {produit.nom}
                 </p>
 
-                <p> ${produit.prix} </p>
-              </div>
+                <p className="flex gap-2"> <span className="font-black ">MRU</span>
+                
+                {produit.prix} </p>              </div>
               <button
                  className=" flex gap-2 justify-center max-sm:ml-2 border-2 w-full max-sm:w-36  max-sm:p-0.5 border-black py-1 mr-5 rounded-3xl"
                 onClick={() => handleNavigate(produit.id)}

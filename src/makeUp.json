@@ -4,18 +4,18 @@
     "nom": "Fond de Teint Liquide",
     "description": "Maybelline",
     "teinte": "Beige Naturel",
-    "prix": 14.99,
+    "prix": 599,
     "image": "/MakeUp/Fond de Teint Fluide.jfif",
     "catégorie": "Visage",
     "stock": 50,
-    "marque":""
+    "marque": ""
   },
   {
     "id": 2,
     "nom": "Rouge à Lèvres Mat",
     "marque": "MAC",
     "teinte": "Ruby Woo",
-    "prix": 19.99,
+    "prix": 799,
     "image": "/MakeUp/Mat.jfif",
     "catégorie": "Lèvres",
     "stock": 30
@@ -25,7 +25,7 @@
     "nom": "Palette de Fards à Paupières",
     "marque": "Urban Decay",
     "teinte": "Naked Heat",
-    "prix": 49.99,
+    "prix": 1999,
     "image": "/MakeUp/paupières.jfif",
     "catégorie": "Yeux",
     "stock": 20
@@ -35,7 +35,7 @@
     "nom": "Mascara Volume",
     "marque": "L'Oréal",
     "teinte": "Noir Intense",
-    "prix": 12.99,
+    "prix": 519,
     "image": "/MakeUp/Mascaras.jfif",
     "catégorie": "Yeux",
     "stock": 40
@@ -45,7 +45,7 @@
     "nom": "Blush Poudré",
     "marque": "NARS",
     "teinte": "Orgasm",
-    "prix": 29.99,
+    "prix": 1199,
     "image": "/MakeUp/Blush.jfif",
     "catégorie": "Visage",
     "stock": 25
@@ -55,7 +55,7 @@
     "nom": "Eyeliner",
     "marque": "NARS",
     "teinte": "Orgasm",
-    "prix": 29.99,
+    "prix": 1199,
     "image": "/MakeUp/crayon.jfif",
     "catégorie": "Yeux",
     "stock": 25
@@ -65,7 +65,7 @@
     "nom": "Poudre Fixante",
     "marque": "NARS",
     "teinte": "Orgasm",
-    "prix": 29.99,
+    "prix": 1199,
     "image": "/MakeUp/𝐍𝐀𝐑𝐒 ♡.jfif",
     "catégorie": "Visage",
     "stock": 25

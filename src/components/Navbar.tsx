@@ -160,7 +160,7 @@ export default function Navbar() {
         onClick={toggleSidebar1}
       >
         <div
-          className={`fixed top-0 left-0 w-64 bg-white h-full p-5 max-lg:w-[400px] max-sm:w-[300px] transform transition-transform ${
+          className={`fixed top-0 left-0  w-64 bg-white h-full p-5 max-lg:w-[400px] max-sm:w-[300px] transform transition-transform ${
             sidebarOpen1 ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -225,31 +225,34 @@ export default function Navbar() {
       </div>
       {/* Sidebar Panier */}
       <div
-        className={`fixed top-0 right-0 w-1/3 bg-white h-full shadow-xl p-10 max-lg:p-4 transform transition-transform z-50 
-          max-lg:w-2/3  max-sm:w-[45vh] rounded-s-4xl ${
-            sidebarOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed top-0 right-0 max-sm:bottom-0 max-sm:top-auto w-1/3 bg-white h-full shadow-xl p-10 max-lg:p-4 transform transition-transform z-50 max-lg:w-2/3 max-sm:w-full max-sm:h-[80vh] max-sm:rounded-t-4xl max-sm:border-t max-sm:border-black rounded-s-4xl ${
+          sidebarOpen
+            ? "translate-x-0 max-sm:translate-y-10"
+            : "sm:translate-x-full max-sm:translate-y-full"
+        }`}
       >
         <div className="flex mb-10 -mt-5  overflow-auto ">
-          <button onClick={toggleSidebar} className="absolute top-2 right-2">
+          <button onClick={toggleSidebar} className="absolute top-2 right-3">
             <X className="mt-6" size={13} />
           </button>
-          <h2 className="text-xl font-bold mb-3 max-sm:mt-10">Votre Panier</h2>
+          <p className="text-xl font-bold mb-3 max-sm:mt-10  max-lg:mt-10 max-sm:text-center">
+            Votre Panier
+          </p>
         </div>
         {cart.length === 0 ? (
           <p>Votre panier est vide</p>
         ) : (
           <ul className="">
             {cart.map((item) => (
-              <li key={item.id} className="flex  p-2 max-sm:p-1 max-sm:mr-10 ">
+              <li key={item.id} className="flex   p-2 max-sm:p-1 max-sm:mr-10 ">
                 <button
                   onClick={() => removeFromCart(item.id)}
                   className="text-sm -mt-32 "
                 >
                   <X className="mt-6" size={13} />
                 </button>
-                <div className="grid grid-cols-2 gap-10  ">
-                  <div className="flex max-sm:mr-14">
+                <div className="grid grid-cols-2 gap-10 max-sm:gap-24 overflow-  ">
+                  <div className="flex max-sm:mr-14 max-sm:flex-none max-sm:min-w-[200px] ">
                     <img
                       src={item.image}
                       alt={item.nom}
@@ -286,11 +289,11 @@ export default function Navbar() {
             ))}
           </ul>
         )}
-        <div className="fixed bottom-14 p-1 max-lg:bottom-30 max-sm:bottom-10 ">
-          <div className=" mb-5 border rounded-3xl w-[57vh] p-2 max-lg:w-[38vh] bg-black font-bold text-center  text-white">
+        <div className="fixed bottom-14 p-1 max-lg:bottom-30 max-sm:w-full  max-sm:bottom-10  max-sm:ps-2 max-sm:pe-8  ">
+          <div className=" mb-5 border rounded-3xl w-[57vh] p-2 max-lg:w-[38vh] bg-black font-bold text-center  max-sm:w-full  text-white">
             Frais de livraison {fraisLivraison}MRU
           </div>
-          <div className="grid grid-cols-1  max-lg:w-[38vh]">
+          <div className="grid grid-cols-1  max-lg:w-[38vh]  max-sm:w-full">
             <p className="text-lg font-semibold  flex justify-between">
               Sous-total{" "}
               <span className="font-bold">
@@ -308,7 +311,7 @@ export default function Navbar() {
             </p>
           </div>
           <div
-            className={`border rounded-3xl w-[57vh]  max-lg:w-[38vh] p-2 font-bold text-center text-white 
+            className={`border rounded-3xl w-[57vh]   max-sm:w-full max-lg:w-[38vh] p-2 font-bold text-center text-white 
     ${
       cart.length === 0
         ? "bg-gray-500 cursor-not-allowed"
@@ -319,9 +322,13 @@ export default function Navbar() {
             Commander
           </div>
           {isModalOpen && (
-            <div className="fixed inset-0 flex items-center justify-center rounded-s-4xl shadow-xl bg-white bg-opacity-50">
-              <div className="bg-black p-6 rounded-lg shadow-lg w-[40vh]">
-                <h2 className="text-xl text-white font-bold mb-4 text-center">
+            <div className="fixed inset-0 flex items-center  justify-center  shadow-xl max-sm:rounded-t-4xl max-sm:border-t max-sm:border-gray-400 rounded-s-4xl bg-white bg-opacity-50">
+               <button onClick={toggleSidebar} className="absolute top-2 right-3">
+            <X className="mt-6" size={13} />
+          </button>
+            
+              <div className="bg-slate-50 p-6 rounded-lg border border-gray-300 shadow-lg w-[40vh]">
+                <h2 className="text-xl text-black font-bold mb-4 text-center">
                   Votre numéro
                 </h2>
 
@@ -329,7 +336,7 @@ export default function Navbar() {
                 <input
                   type="tel"
                   placeholder="Ex: 221774567890"
-                  className="border p-2  w-full rounded text-white placeholder:text-white"
+                  className="border border-gray-300 p-2  w-full rounded-md text-black placeholder:text-black"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
@@ -338,15 +345,15 @@ export default function Navbar() {
                 <div className="flex justify-between mt-4">
                   <button
                     className="bg-slate-200 text-black px-4 py-1 rounded"
-                    onClick={closeModal}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    className="bg-slate-200 text-black px-4 py-1 rounded"
                     onClick={handleWhatsAppRedirect}
                   >
                     Envoyer
+                  </button>
+                  <button
+                    className="bg-slate-200 text-black px-4 py-1 rounded-md"
+                    onClick={closeModal}
+                  >
+                    Annuler
                   </button>
                 </div>
               </div>
