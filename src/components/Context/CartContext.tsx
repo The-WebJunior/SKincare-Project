@@ -12,22 +12,36 @@ type CartContextType = {
   cart: Product[];
   addToCart: (product: Product) => void;
   removeFromCart: (id: number) => void;
-
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [cart, setCart] = useState<Product[]>([]);
 
+  // const addToCart = (product: Product) => {
+  //   setCart((prev) => {
+  //     const existingProduct = prev.find((p) => p.id === product.id);
+  //     if (existingProduct) {
+  //       return prev.map((p) =>
+  //         p.id === product.id ? { ...p, quantity: p.quantity + product.quantity } : p
+  //       );
+  //     }
+  //     return [...prev, product];
+  //   });
+  // };
   const addToCart = (product: Product) => {
     setCart((prev) => {
       const existingProduct = prev.find((p) => p.id === product.id);
       if (existingProduct) {
+        // Si l'élément existe, mettre à jour la quantité
         return prev.map((p) =>
-          p.id === product.id ? { ...p, quantity: p.quantity + product.quantity } : p
+          p.id === product.id ? { ...p, quantity: product.quantity } : p
         );
       }
+      // Sinon, ajouter le produit au panier
       return [...prev, product];
     });
   };

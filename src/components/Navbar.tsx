@@ -16,7 +16,7 @@ export default function Navbar() {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, addToCart } = useCart();
   const { favoriteProducts } = useHeart();
 
   const fraisLivraison = 100;
@@ -35,6 +35,22 @@ export default function Navbar() {
     });
   }, [cart]);
 
+  const handleQuantityChange = (itemId: number, action: string) => {
+    const itemToUpdate = cart.find((item) => item.id === itemId);
+    if (!itemToUpdate) return;
+
+    let updatedItem;
+
+    if (action === "increase") {
+      updatedItem = { ...itemToUpdate, quantity: itemToUpdate.quantity + 1 };
+    } else if (action === "decrease" && itemToUpdate.quantity > 1) {
+      updatedItem = { ...itemToUpdate, quantity: itemToUpdate.quantity - 1 };
+    }
+
+    if (updatedItem) {
+      addToCart(updatedItem);
+    }
+  };
   const [sidebarOpen1, setSidebarOpen1] = useState(false); // Gère le menu latéral
   const toggleSidebar1 = () => {
     setSidebarOpen1(!sidebarOpen1);
@@ -242,13 +258,25 @@ export default function Navbar() {
                     <p className="mt-3 font-bold w-80 text-md">{item.nom}</p>
                   </div>
                   <div className="flex flex-col items-start space-y-2 ml-16">
-                    <p className="text-xl max-sm:text-sm font-bold w-80 max-sm:w-52">{item.prix} MRU</p>
+                    <p className="text-xl max-sm:text-sm font-bold w-80 max-sm:w-52">
+                      {item.prix} MRU
+                    </p>
                     <div className="flex items-center justify-between w-24  max-sm:w-16  max-sm:p1 border rounded-2xl p2">
-                      <button className="text-xl font-bold text-green-500 hover:bg-green-100 rounded-full w-8 h-8 flex items-center justify-center">
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(item.id, "increase")
+                        }
+                        className="text-xl font-bold text-green-500 hover:bg-green-100 rounded-full w-8 h-8 flex items-center justify-center"
+                      >
                         +
                       </button>
                       <p className="text-lg font-semibold">{item.quantity}</p>
-                      <button className="text-xl font-bold text-red-500 hover:bg-red-100 rounded-full w-8 h-8 flex items-center justify-center">
+                      <button
+                        onClick={() =>
+                          handleQuantityChange(item.id, "decrease")
+                        }
+                        className="text-xl font-bold text-red-500 hover:bg-red-100 rounded-full w-8 h-8 flex items-center justify-center"
+                      >
                         -
                       </button>
                     </div>
